@@ -1,23 +1,24 @@
 import { PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { BookList } from "./screens/BookList/BookList";
-import { MyBooks } from "./screens/Mybooks/MyBooks";
-import { Profile } from "./screens/Profile/Profile";
+import { StyleSheet } from "react-native";
+import BookList from "./screens/bookList/BookList";
+import MyBooks from "./screens/myBooks/MyBooks";
+import Profile from "./screens/profile/Profile";
 
-
+const BottomTabs = createBottomTabNavigator();
+// esto es para crear el navegador con el menu
 export default function App() {
   return (
-    <View style={styles.container}>
-    </View>
+    <PaperProvider>
+      <NavigationContainer>
+        <BottomTabs.Navigator>
+          <BottomTabs.Screen name="booklist" component={BookList} />
+          <BottomTabs.Screen name="mybooks" component={MyBooks} />
+          <BottomTabs.Screen name="profile" component={Profile} />
+        </BottomTabs.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
+
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
