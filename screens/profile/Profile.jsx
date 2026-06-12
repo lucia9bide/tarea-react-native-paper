@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     text: {
-        fontStyle: "arial",
         fontSize: 20,
         color: "#003aa5"
     }

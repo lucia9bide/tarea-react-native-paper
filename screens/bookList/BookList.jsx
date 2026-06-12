@@ -17,9 +17,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderColor: "#82adff",
         borderWidth: 1,
+        
     },
     text: {
-        fontStyle: "arial",
         fontSize: 20,
         color: "#003aa5"
     }
