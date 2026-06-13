@@ -97,9 +97,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#f7f9fc",
     },
     search: {
-        width: "95%",
-        marginBottom: 15,
-        borderRadius: 15,
+        width: "100%",
+        marginBottom: 10,
         backgroundColor: "rgba(0, 58, 165, 0.48)",
     },
     card: {
