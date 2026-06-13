@@ -6,7 +6,8 @@ import { books } from "../../data/Data";
 
 const BookList = () => {
     const [search, setSearch] = useState("");
-    const [showSummary, setShowSummary] = useState(false);
+    const [expandedBook, setExpandedBook] = useState(null);
+    //para expandir por id
 
     //filtrar sin hacer diferencia entre minusculas y mayusculas (toLowerCase())
     const filteredBooks = books.filter((book) =>
@@ -15,10 +16,9 @@ const BookList = () => {
 
     /*El textInput sera nuestra barra buscador
     el value es para decirle al textinput que valor mostrar
-    el onChangeText es para cuando el usuario esta escribiendo, el buscador muestre lo mismo en el momento*/
+    el onChangeText se ejecuta cada vez que el usuario esta escribiendo algo, el buscador muestre lo mismo en el momento*/
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>LIBROS</Text>
             <View>
                 <TextInput style={styles.search}
                     placeholder="Buscar libro"
@@ -30,16 +30,18 @@ const BookList = () => {
                 data={filteredBooks}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
-                    <Card style={{
-                        marginVertical: 10,
-                        borderRadius: 16
-                    }}>
+                    <Card style={styles.card}>
                         <Card.Cover source={{ uri: item.imageUrl }} />
 
                         <Card.Content>
-                            <Text variant="titleLarge">{item.title}</Text>
+                            <Text variant="titleLarge" style={styles.titleCard}>{item.title}</Text>
                             <Text variant="bodyMedium">{item.author}</Text>
-                            <Text numberOfLines={2}>{item.summary}</Text>
+                            <Text
+                                variant="bodyMedium"
+                                style={styles.summary}
+                                numberOfLines={expandedBook === item.id ? undefined : 2}>
+                                {item.summary}
+                            </Text>
                         </Card.Content>
 
                         <Card.Actions>
@@ -49,9 +51,15 @@ const BookList = () => {
 
                             <Button
                                 mode="outlined"
-                                onPress={() => setShowSummary(!showSummary)}
+                                onPress={() =>
+                                    setExpandedBook(
+                                        expandedBook === item.id ? null : item.id
+                                    )
+                                }
                             >
-                                {showSummary ? "Ocultar" : "Ver resumen"}
+                                {expandedBook === item.id
+                                    ? "Ocultar"
+                                    : "Ver resumen"}
                             </Button>
                         </Card.Actions>
                     </Card>
@@ -60,6 +68,21 @@ const BookList = () => {
         </View>
     )
 }
+
+/*aca explico lo que esta dentro de card
+    data={filteredBooks} -> muestra la lista de libros filtrados
+    keyExtractor={(item) => item.id.toString()} -> para tener un identificador de cada elemento
+    renderItem={({ item }) => esta funcion es apra definir como se veria cada libro (item aca)
+
+    si el libro esta expandido
+        (expandedBook === item.id)
+        numberOfLines recibe undefined y muestra todo el resumen
+    y sino el texto se contrae
+
+    explicando los botones
+    con un operador ternario se muestra si el libro esta disponible o no
+    el onPress guarda null si ya esta desglosada la descripcion para cerrarla y el id lo guarda para abrirlo
+*/
 
 export default BookList
 
@@ -70,16 +93,30 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderColor: "#82adff",
         borderWidth: 1,
-
-    },
-    text: {
-        fontSize: 20,
-        padding: 20,
-        color: "#003aa5"
+        padding: 15,
+        backgroundColor: "#f7f9fc",
     },
     search: {
-
-        borderRadius: 20,
+        width: "95%",
+        marginBottom: 15,
+        borderRadius: 15,
         backgroundColor: "rgba(0, 58, 165, 0.48)",
-    }
+    },
+    card: {
+        marginVertical: 12,
+        borderRadius: 18,
+        overflow: "hidden",
+        elevation: 5,
+        backgroundColor: "rgba(1, 20, 80, 0.76)"
+    },
+    titleCard:{
+        fontSize: 20,
+        marginTop: 10,
+        color: "#f5f5f5"
+    },
+    summary: {
+        marginTop: 10,
+        color: "#c9c4de",
+        lineHeight: 22,
+    },
 })
